@@ -26,8 +26,9 @@ wheels/
 # PyTorch
 *.pth
 
-# Large data files (embeddings cache can be regenerated)
-*.npz
+# Temporary files
+*.tmp
+*.temp
 
 # IDE
 .vscode/
