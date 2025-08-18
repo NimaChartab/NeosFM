@@ -30,9 +30,6 @@ Output: 512D Normalized Embeddings
 pip install torch numpy matplotlib pandas scikit-learn umap-learn astropy ipywidgets jupyter
 ```
 
-## Model Files
-
-The trained model weights (`best_model.pt`) are included in this repository. The pre-computed embeddings cache (`model_embeddings.npz`) is excluded due to size limits but will be automatically generated when you first run the notebook.
 
 ## Usage
 
@@ -44,6 +41,20 @@ jupyter notebook neos_explorer.ipynb
 ```
 
 2. Run all cells to load the model and start the interactive interface
+
+### Training Your Own Model
+
+To train a new model from scratch:
+
+```bash
+cd models
+python train_model.py
+```
+
+The training script will:
+- Load data from NEO Surveyor visits
+- Train the dual-channel ResNet + tabular encoder
+- Save the best model as `best_model.pt`
 
 ### Interactive Features
 
