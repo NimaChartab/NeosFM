@@ -26,9 +26,8 @@ wheels/
 # PyTorch
 *.pth
 
-# Large model files (exceed GitHub 100MB limit)
+# Large data files (embeddings cache can be regenerated)
 *.npz
-*.pt
 
 # IDE
 .vscode/
