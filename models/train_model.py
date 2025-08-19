@@ -110,8 +110,7 @@ class FoundationModelTrainer:
                     )
                     
                     # Contrastive loss between image and tabular modalities
-                    # Since image_embeds already combines NC1+NC2, we use it for both image arguments
-                    loss = self.criterion(image_embeds, image_embeds, tabular_embeds, strategy="image_tabular")
+                    loss = self.criterion(image_embeds, tabular_embeds)
                 
                 # Mixed precision backward pass
                 self.scaler.scale(loss).backward()

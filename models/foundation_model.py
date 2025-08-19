@@ -238,20 +238,32 @@ class ContrastiveLoss(nn.Module):
         super().__init__()
         self.temperature = temperature
         
-    def forward(self, embeddings1, embeddings2, embeddings3=None):
-        batch_size = embeddings1.size(0)
+    def info_nce_loss(self, features1, features2):
+        """Compute InfoNCE loss between two sets of features"""
+        batch_size = features1.size(0)
         
         # Normalize embeddings
-        embeddings1 = F.normalize(embeddings1, p=2, dim=1)
-        embeddings2 = F.normalize(embeddings2, p=2, dim=1)
+        features1 = F.normalize(features1, p=2, dim=1)
+        features2 = F.normalize(features2, p=2, dim=1)
         
         # Compute similarity matrix
-        similarity_matrix = torch.matmul(embeddings1, embeddings2.T) / self.temperature
+        sim_matrix = torch.matmul(features1, features2.T) / self.temperature
         
-        # Create labels (positive pairs are on diagonal)
-        labels = torch.arange(batch_size, device=embeddings1.device)
+        # Create labels (positive pairs are on the diagonal)
+        labels = torch.arange(batch_size).to(features1.device)
         
         # Compute cross-entropy loss
-        loss = F.cross_entropy(similarity_matrix, labels)
+        loss = F.cross_entropy(sim_matrix, labels)
+        return loss
         
+    def forward(self, image_embeds, tabular_embeds):
+        """
+        Compute contrastive loss between image and tabular modalities
+        
+        Args:
+            image_embeds: Image embeddings (from dual-channel ResNet)
+            tabular_embeds: Tabular embeddings
+        """
+        # Compare image embeddings with tabular embeddings
+        loss = self.info_nce_loss(image_embeds, tabular_embeds)
         return loss
