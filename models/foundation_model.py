@@ -257,13 +257,7 @@ class ContrastiveLoss(nn.Module):
         return loss
         
     def forward(self, image_embeds, tabular_embeds):
-        """
-        Compute contrastive loss between image and tabular modalities
         
-        Args:
-            image_embeds: Image embeddings (from dual-channel ResNet)
-            tabular_embeds: Tabular embeddings
-        """
         # Compare image embeddings with tabular embeddings
         loss = self.info_nce_loss(image_embeds, tabular_embeds)
         return loss
